@@ -7,6 +7,10 @@ class Organization(models.Model):
         "Client", on_delete=models.CASCADE, related_name="organizations"
     )
 
+    class Meta:
+        verbose_name = "Organization"
+        verbose_name_plural = "Organizations"
+
     def __str__(self):
         return self.title
 
@@ -14,12 +18,20 @@ class Organization(models.Model):
 class Client(models.Model):
     name = models.CharField(max_length=255)
 
+    class Meta:
+        verbose_name = "Client"
+        verbose_name_plural = "Clients"
+
     def __str__(self):
         return self.name
 
 
 class Service(models.Model):
     title = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = "Service"
+        verbose_name_plural = "Services"
 
     def __str__(self):
         return self.title
@@ -33,6 +45,10 @@ class Bill(models.Model):
     bill_sum = models.FloatField()
     date = models.DateField()
     services = models.ManyToManyField("Service")
+
+    class Meta:
+        verbose_name = "Bill"
+        verbose_name_plural = "Bills"
 
     def __str__(self):
         return str(self.number)

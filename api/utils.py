@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from django.db import transaction
+
 from bills.models import Bill, Client, Organization, Service
 
 
@@ -46,6 +48,7 @@ def is_unique_bill(client, org, number):
     return False
 
 
+@transaction.atomic()
 def save_bill(data):
     client = validate_client(data["client_name"])
     org = validate_organization(data["client_org"], client)

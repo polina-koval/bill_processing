@@ -7,8 +7,7 @@ def validate_client(client_name):
     if client_name:
         client, _ = Client.objects.get_or_create(name=client_name)
         return client
-    else:
-        raise ValueError("No client name")
+    raise ValueError("No client name")
 
 
 def validate_organization(org_name, client):
@@ -17,8 +16,7 @@ def validate_organization(org_name, client):
             title=org_name, client=client
         )
         return org
-    else:
-        raise ValueError("No client organization")
+    raise ValueError("No client organization")
 
 
 def validate_bill_sum(bill_sum):

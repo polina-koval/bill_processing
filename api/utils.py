@@ -5,14 +5,14 @@ from django.db import transaction
 from bills.models import Bill, Client, Organization, Service
 
 
-def validate_client(client_name):
+def validate_client(client_name: str) -> Client:
     if client_name:
         client, _ = Client.objects.get_or_create(name=client_name)
         return client
     raise ValueError("No client name")
 
 
-def validate_organization(org_name, client):
+def validate_organization(org_name: str, client: Client) -> Organization:
     if org_name:
         org, _ = Organization.objects.get_or_create(
             title=org_name, client=client
@@ -21,7 +21,7 @@ def validate_organization(org_name, client):
     raise ValueError("No client organization")
 
 
-def validate_bill_sum(bill_sum):
+def validate_bill_sum(bill_sum: str) -> float:
     try:
         bill_sum = float(bill_sum.replace(",", "."))
         return bill_sum
@@ -29,7 +29,7 @@ def validate_bill_sum(bill_sum):
         raise ValueError("sum field must be a number")
 
 
-def validate_date(date_str):
+def validate_date(date_str: str) -> datetime:
     try:
         date = datetime.strptime(date_str, "%d.%m.%Y")
         return date
@@ -37,7 +37,7 @@ def validate_date(date_str):
         raise ValueError("Invalid date format")
 
 
-def is_unique_bill(client, org, number):
+def is_unique_bill(client: Client, org: Organization, number: str) -> bool:
     bills = Bill.objects.filter(
         client_name=client,
         client_name__organizations__title=org,
@@ -49,7 +49,7 @@ def is_unique_bill(client, org, number):
 
 
 @transaction.atomic()
-def save_bill(data):
+def save_bill(data: dict) -> dict:
     client = validate_client(data["client_name"])
     org = validate_organization(data["client_org"], client)
     number = data["№"]
